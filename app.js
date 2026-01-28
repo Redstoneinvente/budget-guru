@@ -17,12 +17,14 @@ import {
 // See the Firebase docs for more information on initializing Firebase for web.
 // https://firebase.google.com/docs/web/setup
 const firebaseConfig = {
-  apiKey: "YOUR_API_KEY",
-  authDomain: "YOUR_PROJECT.firebaseapp.com",
-  projectId: "YOUR_PROJECT_ID",
-  storageBucket: "YOUR_PROJECT.appspot.com",
-  messagingSenderId: "YOUR_SENDER_ID",
-  appId: "YOUR_APP_ID",
+  // Firebase configuration for the Dummy project web app
+  apiKey: "AZTaSyA8yakB-w07KDF4uK3221fpd4HfjE8",
+  authDomain: "dummy-9ffb9.firebaseapp.com",
+  projectId: "dummy-9ffb9",
+  storageBucket: "dummy-9ffb9.firebasestorage.app",
+  messagingSenderId: "705172938759",
+  appId: "1:705172938759:web:e8e91dc79d5bb4e5464aa2",
+  measurementId: "G-GRWRPVXXX",
 };
 
 let db = null;
