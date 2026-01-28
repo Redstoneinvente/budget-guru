@@ -118,12 +118,36 @@ function updateSuggestions() {
   }
   const lastIncome = incomes[incomes.length - 1];
   const totalGoalAmount = goals.reduce((sum, g) => sum + g.amount, 0);
+
+  /*
+   * Distribute the last payment across all goals proportionally, but do not
+   * recommend saving more than what is still needed for each goal. We
+   * calculate how much of each goal has effectively been "allocated" from
+   * previous payments based on the same ratio, then cap the recommended
+   * amount accordingly. Once a goal has been fully funded, the
+   * recommendation will reflect that the goal is achieved.
+   */
   goals.forEach((goal) => {
+    // Determine this goal's share of the total target
     const ratio = totalGoalAmount > 0 ? goal.amount / totalGoalAmount : 0;
-    const recommended = lastIncome.amount * ratio;
+    // Sum contributions from all incomes except the last one
+    const contributionsFromPrevious = incomes.slice(0, incomes.length - 1).reduce((sum, inc) => {
+      return sum + inc.amount * ratio;
+    }, 0);
+    // Compute how much is left to save for this goal
+    const remaining = goal.amount - contributionsFromPrevious;
+    // Calculate the suggested amount from the last payment; cap it by remaining
+    let recommended = 0;
+    if (remaining > 0) {
+      recommended = Math.min(lastIncome.amount * ratio, remaining);
+    }
     const recommendation = document.createElement("div");
     recommendation.className = "p-3 bg-gray-100 rounded-md";
-    recommendation.innerHTML = `<strong>${goal.name}:</strong> save ₹${recommended.toFixed(2)} from your last payment`;
+    if (remaining <= 0) {
+      recommendation.innerHTML = `<strong>${goal.name}:</strong> Goal achieved!`; 
+    } else {
+      recommendation.innerHTML = `<strong>${goal.name}:</strong> save ₹${recommended.toFixed(2)} from your last payment`;
+    }
     suggestionsDiv.appendChild(recommendation);
   });
   // Add a general tip
