@@ -130,10 +130,21 @@ function updateSuggestions() {
   goals.forEach((goal) => {
     // Determine this goal's share of the total target
     const ratio = totalGoalAmount > 0 ? goal.amount / totalGoalAmount : 0;
-    // Sum contributions from all incomes except the last one
-    const contributionsFromPrevious = incomes.slice(0, incomes.length - 1).reduce((sum, inc) => {
-      return sum + inc.amount * ratio;
-    }, 0);
+    // Sum contributions from all incomes except the last one, but cap each contribution
+    // so that we never allocate more than needed for this goal. Without capping, large
+    // early incomes could "over-fund" the goal before considering subsequent goals, which
+    // leads to incorrect suggestion text like "Goal achieved" when there is still
+    // remaining amount needed. To fix this, accumulate contributions by iterating
+    // through previous incomes and adding the lesser of the calculated share and
+    // the remaining requirement for this goal.
+    const contributionsFromPrevious = incomes
+      .slice(0, incomes.length - 1)
+      .reduce((sum, inc) => {
+        const potential = inc.amount * ratio;
+        const remainingForThisGoal = goal.amount - sum;
+        const actual = Math.min(potential, remainingForThisGoal);
+        return sum + actual;
+      }, 0);
     // Compute how much is left to save for this goal
     const remaining = goal.amount - contributionsFromPrevious;
     // Calculate the suggested amount from the last payment; cap it by remaining
