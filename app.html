@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Budget Guru – Dashboard</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="icon" href="./favicon.ico" />
+</head>
+<body class="bg-gray-50 min-h-screen flex flex-col">
+  <header class="bg-white shadow">
+    <div class="max-w-7xl mx-auto py-4 px-4 flex justify-between items-center">
+      <h1 class="text-2xl font-bold text-blue-600">Budget&nbsp;Guru Dashboard</h1>
+      <a href="index.html" class="text-blue-600 hover:underline">&larr; Back&nbsp;Home</a>
+    </div>
+  </header>
+
+  <main class="flex-1 max-w-7xl mx-auto px-4 py-8">
+    <!-- Input Sections -->
+    <div class="grid gap-8 md:grid-cols-2 mb-10">
+      <!-- Income Input -->
+      <div class="bg-white p-6 rounded-lg shadow">
+        <h2 class="text-xl font-semibold mb-4 text-blue-600">Add Payment</h2>
+        <form id="income-form" class="space-y-4">
+          <div>
+            <label for="income-amount" class="block text-sm font-medium text-gray-700">Amount Received</label>
+            <input type="number" id="income-amount" step="0.01" min="0" required class="mt-1 w-full rounded-md border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500" />
+          </div>
+          <div>
+            <label for="income-date" class="block text-sm font-medium text-gray-700">Date</label>
+            <input type="date" id="income-date" required class="mt-1 w-full rounded-md border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500" />
+          </div>
+          <button type="submit" class="w-full bg-blue-600 text-white py-2 rounded-md shadow hover:bg-blue-500 transition">Add Payment</button>
+        </form>
+        <ul id="income-list" class="mt-6 space-y-2 max-h-56 overflow-y-auto"></ul>
+      </div>
+      <!-- Goal Input -->
+      <div class="bg-white p-6 rounded-lg shadow">
+        <h2 class="text-xl font-semibold mb-4 text-blue-600">Add Savings Goal</h2>
+        <form id="goal-form" class="space-y-4">
+          <div>
+            <label for="goal-name" class="block text-sm font-medium text-gray-700">Goal Name</label>
+            <input type="text" id="goal-name" required class="mt-1 w-full rounded-md border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500" />
+          </div>
+          <div>
+            <label for="goal-amount" class="block text-sm font-medium text-gray-700">Target Amount</label>
+            <input type="number" id="goal-amount" step="0.01" min="0" required class="mt-1 w-full rounded-md border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500" />
+          </div>
+          <button type="submit" class="w-full bg-green-600 text-white py-2 rounded-md shadow hover:bg-green-500 transition">Add Goal</button>
+        </form>
+        <ul id="goal-list" class="mt-6 space-y-2 max-h-56 overflow-y-auto"></ul>
+      </div>
+    </div>
+
+    <!-- Suggestions Section -->
+    <div class="bg-white p-6 rounded-lg shadow mb-8">
+      <h2 class="text-xl font-semibold mb-4 text-blue-600">Savings Suggestions</h2>
+      <div id="suggestions" class="space-y-2 text-gray-700">
+        <p class="text-gray-500">Add some payments and goals to receive personalized suggestions.</p>
+      </div>
+    </div>
+
+    <!-- Summary Section -->
+    <div class="bg-white p-6 rounded-lg shadow">
+      <h2 class="text-xl font-semibold mb-4 text-blue-600">Summary</h2>
+      <p id="summary" class="text-gray-700">No data yet.</p>
+    </div>
+  </main>
+
+  <footer class="bg-gray-200 py-4 text-center text-gray-600">
+    <p>&copy; <span id="year-dashboard"></span> Budget&nbsp;Guru</p>
+  </footer>
+
+  <!-- Firebase and App scripts -->
+  <!-- Import Firebase v10 modules via ES modules -->
+  <script type="module" src="https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js"></script>
+  <script type="module" src="https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js"></script>
+  <script type="module" src="app.js"></script>
+  <script>
+    // Update footer year
+    document.getElementById('year-dashboard').textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>
